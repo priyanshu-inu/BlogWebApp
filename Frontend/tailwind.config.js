@@ -1,4 +1,4 @@
-import flowbite from 'flowbite/plugin';
+import flowbite from "flowbite/plugin";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -8,7 +8,11 @@ export default {
     "./node_modules/flowbite-react/**/*.{js,ts,jsx,tsx}", // Including flowbite-react if needed
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "olive-600": "#808000", // Add olive green color
+      },
+    },
   },
   plugins: [flowbite], // Flowbite plugin integrated using ES Modules
 };

@@ -1,13 +1,13 @@
 import { Button, Navbar, TextInput } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom"; // Import useLocation hook
 import Logo from "../assets/favicon.png";
 import { AiOutlineSearch } from "react-icons/ai";
-import { useState } from "react"; // Import useState
+import { useState } from "react";
 
 const Header = () => {
   // State to manage the mobile menu visibility
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // For dropdown menu
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Function to toggle the menu
   const toggleMenu = () => {
@@ -17,6 +17,19 @@ const Header = () => {
   // Function to toggle dropdown menu
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  // Function to handle destination dropdown toggle for mobile
+  const toggleMobileDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  // Get the current route using useLocation
+  const location = useLocation();
+
+  // Function to check if the link is active
+  const isActive = (path) => {
+    return location.pathname === path ? "text-olive-600" : "text-black"; // Set the active link to olive
   };
 
   return (
@@ -46,20 +59,21 @@ const Header = () => {
           <div className="flex items-center gap-2 md:order-2">
             {/* Navigation Links on Large Screen */}
             <div className="hidden lg:flex gap-7 text-lg font-medium items-center">
-              <Link to="/" className="text-sm text-black hover:text-gray-500">
+              <Link
+                to="/"
+                className={`text-sm ${isActive("/")} hover:text-gray-500`} // Apply active class
+              >
                 Home
               </Link>
               <Link
                 to="/about"
-                className="text-sm text-black hover:text-gray-500"
+                className={`text-sm ${isActive("/about")} hover:text-gray-500`} // Apply active class
               >
                 About
               </Link>
 
               {/* Destination with margin-top and dropdown */}
               <div className="relative -mt-1">
-                {" "}
-                {/* Added mt-2 here for margin from top */}
                 <button
                   onClick={toggleDropdown}
                   className="text-sm text-black hover:text-gray-500"
@@ -73,13 +87,13 @@ const Header = () => {
                   }`}
                 >
                   <Link
-                    to="/destination1"
+                    to="/tips"
                     className="block px-4 py-2 text-sm text-black hover:bg-gray-100"
                   >
                     Tips
                   </Link>
                   <Link
-                    to="/destination2"
+                    to="/blog"
                     className="block px-4 py-2 text-sm text-black hover:bg-gray-100"
                   >
                     Blogs
@@ -89,17 +103,31 @@ const Header = () => {
 
               <Link
                 to="/writeforus"
-                className="text-sm text-black hover:text-gray-500"
+                className={`text-sm ${isActive(
+                  "/writeforus"
+                )} hover:text-gray-500`} // Apply active class
               >
                 Write For Us
               </Link>
               <Link
                 to="/contact-us"
-                className="text-sm text-black hover:text-gray-500"
+                className={`text-sm ${isActive(
+                  "/contact-us"
+                )} hover:text-gray-500`} // Apply active class
               >
                 Contact Us
               </Link>
             </div>
+
+            {/* Sign In Button */}
+            <Link to="/sign-in">
+              <Button
+                color="black"
+                className="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 ml-5 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 me-1"
+              >
+                Sign In
+              </Button>
+            </Link>
 
             {/* Hamburger Icon for mobile menu */}
             <Button
@@ -123,16 +151,6 @@ const Header = () => {
                 />
               </svg>
             </Button>
-
-            {/* Sign In Button */}
-            <Link to="/sign-in">
-              <Button
-                color="black"
-                className="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 ml-5 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 me-1"
-              >
-                Sign In
-              </Button>
-            </Link>
           </div>
         </div>
       </Navbar>
@@ -143,27 +161,57 @@ const Header = () => {
           isMenuOpen ? "block" : "hidden"
         }`}
       >
-        <Link to="/" className="text-xl text-black hover:text-gray-500">
+        <Link
+          to="/"
+          className={`text-xl ${isActive("/")} hover:text-gray-500`} // Apply active class
+        >
           Home
         </Link>
-        <Link to="/about" className="text-xl text-black hover:text-gray-500">
+        <Link
+          to="/about"
+          className={`text-xl ${isActive("/about")} hover:text-gray-500`} // Apply active class
+        >
           About
         </Link>
-        <Link
-          to="/destination"
-          className="text-xl text-black hover:text-gray-500"
-        >
-          Destination
-        </Link>
+
+        {/* Mobile Destination with Dropdown */}
+        <div className="relative">
+          <button
+            onClick={toggleMobileDropdown}
+            className="text-xl text-black hover:text-gray-500"
+          >
+            Destination
+          </button>
+          {/* Mobile Dropdown */}
+          <div
+            className={`${
+              isDropdownOpen ? "block" : "hidden"
+            } absolute left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg`}
+          >
+            <Link
+              to="/tips"
+              className="block px-4 py-2 text-sm text-black hover:bg-gray-100"
+            >
+              Tips
+            </Link>
+            <Link
+              to="/blog"
+              className="block px-4 py-2 text-sm text-black hover:bg-gray-100"
+            >
+              Blogs
+            </Link>
+          </div>
+        </div>
+
         <Link
           to="/writeforus"
-          className="text-xl text-black hover:text-gray-500"
+          className={`text-xl ${isActive("/writeforus")} hover:text-gray-500`} // Apply active class
         >
           Write For Us
         </Link>
         <Link
           to="/contact-us"
-          className="text-xl text-black hover:text-gray-500"
+          className={`text-xl ${isActive("/contact-us")} hover:text-gray-500`} // Apply active class
         >
           Contact Us
         </Link>

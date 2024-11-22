@@ -8,6 +8,8 @@ import Dashboard from "./pages/Dashboard";
 import Header from "./components/Header";
 import Destination from "./pages/Destination";
 import ContactUs from "./pages/ContactUs";
+import Blog from "./pages/Blog";
+import Tips from "./pages/Tips";
 
 const App = () => {
   return (
@@ -23,6 +25,8 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/destination" element={<Destination />} />
           <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/tips" element={<Tips />} />
         </Routes>
       </BrowserRouter>
     </>
