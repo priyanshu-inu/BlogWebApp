@@ -2,12 +2,15 @@ import { Button, Navbar, TextInput } from "flowbite-react";
 import { Link, useLocation } from "react-router-dom"; // Import useLocation hook
 import Logo from "../assets/favicon.png";
 import { AiOutlineSearch } from "react-icons/ai";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const Header = () => {
   // State to manage the mobile menu visibility
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // Reference to the dropdown button and dropdown content
+  const dropdownRef = useRef(null);
 
   // Function to toggle the menu
   const toggleMenu = () => {
@@ -31,6 +34,23 @@ const Header = () => {
   const isActive = (path) => {
     return location.pathname === path ? "text-olive-600" : "text-black"; // Set the active link to olive
   };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false); // Close dropdown if click is outside
+      }
+    };
+
+    // Add event listener for clicks outside
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -73,7 +93,7 @@ const Header = () => {
               </Link>
 
               {/* Destination with margin-top and dropdown */}
-              <div className="relative -mt-1">
+              <div className="relative -mt-1" ref={dropdownRef}>
                 <button
                   onClick={toggleDropdown}
                   className="text-sm text-black hover:text-gray-500"
